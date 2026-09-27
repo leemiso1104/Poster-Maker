@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Poster Maker</title>
+	<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;700;900&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+	<style>
+		body {
+			margin: 0;
+			background: #f3efe9;
+			color: #d54731;
+			font-family: "Noto Sans KR", sans-serif;
+		}
+
+		#gallery {
+			max-width: 960px;
+			margin: 0 auto;
+			padding: 48px 24px;
+		}
+		#gallery h1 {
+			font-family: "Hahmlet", serif;
+			font-weight: 900;
+			font-size: 3rem;
+			margin: 0 0 8px;
+		}
+		#gallery p {
+			margin: 0 0 32px;
+			color: #5eb39a;
+		}
+		.cards {
+			display: flex;
+			gap: 20px;
+			flex-wrap: wrap;
+		}
+		.card {
+			flex: 1 1 240px;
+			aspect-ratio: 2 / 3;
+			background-size: cover;
+			background-position: center;
+			cursor: pointer;
+			display: flex;
+			align-items: flex-end;
+			padding: 16px;
+			box-sizing: border-box;
+			font-weight: 700;
+			outline: 1px solid rgba(223, 230, 238, 0.15);
+		}
+		.card:hover { outline: 6px solid #dfe6ee; }
+
+		#detail {
+			display: none;            
+			max-width: 960px;
+			margin: 0 auto;
+			padding: 32px 24px;
+			gap: 32px;
+			flex-wrap: wrap;
+		}
+		#poster {
+			position: relative;
+			flex: 1 1 360px;
+			max-width: 480px;
+			aspect-ratio: 2 / 3;
+			background-size: cover;
+			background-position: center;
+			overflow: hidden;
+		}
+		#posterTitle {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 70%;
+			margin: 0;
+			padding: 0 20px;
+			text-align: center;
+			font-family: "Hahmlet", sans-serif;
+			font-weight: 900;
+			font-size: 64px;
+			line-height: 1.05;
+			color: #ffffff;
+			word-break: keep-all;
+			display: flex;
+		flex-direction: column;
+		align-items: center;
+		}
+		#posterSub {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 85%;
+		margin: 0;
+		padding: 0 20px;
+		text-align: center;
+		font-family: "Hahmlet", serif;
+		font-weight: 400;
+		font-size: 20px;
+		color: #ffffff;
+		word-break: keep-all;
+		display: flex;
+			flex-direction: column;
+		align-items: center;
+		}
+		#controls {
+			flex: 1 1 240px;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+		}
+		#controls label {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			font-size: 0.9rem;
+			color: #9aa6b8;
+		}
+		#controls input[type="text"] {
+			font-size: 1.1rem;
+			padding: 10px;
+			border: none;
+		}
+		button {
+			align-self: flex-start;
+			padding: 10px 18px;
+			font-size: 1rem;
+			border: 1px solid #dfe6ee;
+			background: transparent;
+			color: #dfe6ee;
+			cursor: pointer;
+		}
+		button:hover { background: #dfe6ee; color: #1c2130; }
+	</style>
+</head>
+<body>
+
+	<div id="gallery">
+		<h1>Poster Maker</h1>
+		<p>포스터를 골라서 나만의 스타일로 꾸며보세요.</p>
+		<div class="cards">
+			<div class="card" id="card1">Monster</div>
+			<div class="card" id="card2">Odyssey</div>
+			<div class="card" id="card3">Perfect Blue</div>
+
+		</div>
+	</div>
+
+	<div id="detail">
+		<div id="poster">
+			<h1 id="posterTitle">제목을 입력하세요</h1>
+			<p id="posterSub"></p>
+		</div>
+
+		<div id="controls">
+			<label>Title
+				<input type="text" id="myText" placeholder="영화 제목을 입력하세요">
+			</label>
+			<label>Color
+				<input type="color" id="fontColor" value="#ffffff">
+			</label>
+			<label>Size
+				<input type="range" id="sizeSlider" min="24" max="140" value="64">
+			</label>
+			<label>Range (Up ↕ Down)
+				<input type="range" id="posSlider" min="5" max="85" value="70">
+			</label>
+
+			<label>Subtitle
+			<input type="text" id="subText" placeholder="서브 타이틀을 입력하세요">
+			</label>
+			<label>Subtitle Color
+			<input type="color" id="subColor" value="#ffffff">
+			</label>
+			<label>Subtitle Size
+			<input type="range" id="subSizeSlider" min="12" max="60" value="20">
+			</label>
+			<label>Subtitle Range (Up ↕ Down)
+			<input type="range" id="subPosSlider" min="5" max="95" value="85">
+			</label>
+
+			<button id="backBtn">Back</button>
+		</div>
+	</div>
+
+	<script>
+		
+		var poster1 = "url('poster1.jpg')"
+		var poster2 = "url('poster2.jpg')"
+		var poster3 = "url('poster3.jpg')"
+
+		card1.style.backgroundImage = poster1;
+		card2.style.backgroundImage = poster2;
+		card3.style.backgroundImage = poster3;
+
+		function openPoster(image, title) {
+			gallery.style.display = "none";
+			detail.style.display = "flex";
+			poster.style.backgroundImage = image;
+			posterTitle.innerHTML = title;
+			myText.value = title;
+
+			posterSub.innerHTML = "";
+			subText.value = "";
+		}
+
+		card1.onclick = function() { openPoster(poster1, "Monster"); }
+		card2.onclick = function() { openPoster(poster2, "Odyssey"); }
+		card3.onclick = function() { openPoster(poster3, "Perfect Blue"); }
+
+		myText.oninput = function() {
+			posterTitle.innerHTML = myText.value;
+		}
+
+		fontColor.oninput = function() {
+			posterTitle.style.color = fontColor.value;
+		}
+
+		sizeSlider.oninput = function() {
+			posterTitle.style.fontSize = sizeSlider.value + "px";
+		}
+
+		posSlider.oninput = function() {
+			posterTitle.style.top = posSlider.value + "%";
+		}
+
+		subText.oninput = function() {
+		posterSub.innerHTML = subText.value;
+		}
+
+		subColor.oninput = function() {
+		posterSub.style.color = subColor.value;
+		}
+
+		subSizeSlider.oninput = function() {
+		posterSub.style.fontSize = subSizeSlider.value + "px";
+		}
+
+		subPosSlider.oninput = function() {
+		posterSub.style.top = subPosSlider.value + "%";
+		}
+
+		backBtn.onclick = function() {
+			detail.style.display = "none";
+			gallery.style.display = "block";
+		}
+	</script>
+</body>
+</html>
